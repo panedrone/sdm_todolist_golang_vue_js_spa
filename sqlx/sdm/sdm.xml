@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="sdm.xsd">
+
+    <dto-class name="sqlx-Project" ref="projects"/>
+
+    <dto-class name="sqlx-ProjectLi" ref="projects">
+
+        <header>// `project` list item: [+] p_tasks_count</header>
+
+        <field type="int64${json-sqlx}" column="p_tasks_count"/>
+
+    </dto-class>
+
+    <dto-class name="sqlx-Task" ref="tasks"/>
+
+    <dto-class name="sqlx-TaskLi" ref="tasks">
+
+        <header>// `task` list item: [-] p_id, [-] t_comments</header>
+
+        <field type="-" column="p_id"/>
+        <field type="-" column="t_comments"/>
+
+    </dto-class>
+
+    <dao-class name="ProjectsDao">
+
+        <crud dto="sqlx-Project">
+            <create/>
+            <read/>
+            <update/>
+            <delete/>
+        </crud>
+
+        <query-dto-list method="GetProjects" dto="sqlx-ProjectLi" ref="get_projects.sql"/>
+
+        <!-- testing -->
+
+        <query-list method="GetProjectIds" return-type="int64" ref="get_projects.sql"/>
+
+        <!-- testing -->
+
+        <!--    <queryContext method="GetProjectId" return-type="int64" ref="get_projects.sql"/>-->
+
+    </dao-class>
+
+    <dao-class name="TasksDao">
+
+        <crud table="tasks" dto="sqlx-Task"/>
+
+        <query-dto-list method="GetGroupTasks(int64 gId)" ref="get_project_tasks.sql" dto="sqlx-TaskLi"/>
+
+        <exec-dml method="DeleteGroupTasks(gId)" ref="delete_project_tasks.sql"/>
+
+        <!-- testing -->
+
+        <query method="GetCount()" ref="select count(*) from tasks" return-type="int64"/>
+
+        <!-- testing -->
+
+        <query-dto-list dto="sqlx-TaskLi" method="GetGroupTasks2(g_id)" ref="delete_project_tasks.sql"/>
+
+    </dao-class>
+
+</sdm>

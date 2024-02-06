@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="sdm.xsd">
+
+    <dto-class name="gorm-Project" ref="projects"/>
+
+    <dto-class name="gorm-ProjectLi" ref="projects">
+
+        <header>// a `project` list item</header>
+
+        <field type="int64${json-gorm}" column="p_tasks_count"/>
+
+    </dto-class>
+
+    <dto-class name="gorm-Task" ref="tasks"/>
+
+    <dto-class name="gorm-TaskLi" ref="tasks">
+
+        <header>// a `task` list item: no p_id, no t_comments</header>
+
+        <field column="p_id" type="-"/>
+        <field column="t_comments" type="-"/>
+
+    </dto-class>
+
+    <dao-class name="ProjectsDao">
+
+        <crud dto="gorm-Project"/>
+
+        <!--    testing on "raw" and field-assign-mode="3" -->
+
+        <query-dto-list method="ReadAllRaw" dto="gorm-ProjectLi" ref="get_projects.sql"/>
+
+    </dao-class>
+
+    <dao-class name="TasksDao">
+
+        <crud dto="gorm-Task"/>
+
+        <!--    testing on "raw" and field-assign-mode="3" -->
+
+        <query-dto-list method="RawProjectTasks(int64 p_id)" dto="gorm-TaskLi" ref="get_project_tasks.sql"/>
+
+    </dao-class>
+
+</sdm>

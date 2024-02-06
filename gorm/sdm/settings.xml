@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="settings.xsd">
+
+    <folders target="sdm_demo_todolist" sql="gorm/sdm/sql"/>
+
+    <dto scope="gorm/models" inheritance="" field-names-mode="0" macro=""/>
+
+    <dao scope="gorm/dbal" field-assign-mode="3" macro=""/>
+
+    <ide event-log="true"/>
+
+    <jdbc jar="lib/sqlite-jdbc-3.42.0.0.jar" class="org.sqlite.JDBC"
+          url="jdbc:sqlite:$PROJECT_DIR$/todolist.sqlite" user="" pwd=""/>
+
+    <type-map default="">
+
+        <type detected="gorm-java.lang.Integer" target="int64${json-gorm} -> SetInt64"/>
+
+        <type detected="gorm-java.lang.Float" target="float32${json-gorm} -> SetFloat64"/>
+        <type detected="gorm-java.lang.Double" target="float64${json-gorm} -> SetFloat64"/>
+
+        <type detected="gorm-java.lang.String" target="string${json-gorm} -> SetString"/>
+        <type detected="gorm-java.util.Date" target="time:time.Time${json-gorm} -> SetTime"/>
+        <type detected="gorm-byte[]" target="byte[]{$json-gorm} -> SetBytes"/>
+
+        <type detected="gorm-java.lang.Object" target="interface{}${json-gorm}"/>
+
+        <type detected="java.lang.Integer" target="int64${json} -> SetInt64"/>
+
+        <type detected="java.lang.Float" target="float32${json} -> SetFloat64"/>
+        <type detected="java.lang.Double" target="float64${json} -> SetFloat64"/>
+
+        <type detected="java.lang.String" target="string${json} -> SetString"/>
+        <type detected="java.util.Date" target="time:time.Time${json} -> SetTime"/>
+        <type detected="byte[]" target="[]byte{$json} -> SetBytes"/>
+
+        <type detected="java.lang.Object" target="interface{}${json}"/>
+
+    </type-map>
+
+    <macros>
+
+        <macro value="=built-in=" name="${column}"/>
+        <macro value="=built-in=" name="${lower_snake_case(column)}"/>
+        <macro value="=built-in=" name="${camelCase(column)}"/>
+        <macro value="=built-in=" name="${TitleCase(column)}"/>
+        <macro value="=built-in=" name="${kebab-case(column)}"/>
+
+        <macro name="${col}" value="${lower_snake_case(column)}"/>
+
+        <macro name="${json}" value=" `json:&quot;${col}${0}&quot;`"/>
+
+        <macro name="${json-gorm}"
+               value=" `json:&quot;${col}${0}&quot; gorm:&quot;column:${column}${gorm-params}&quot;`"/>
+
+        <macro name="${gorm-params}">
+            <vm-xml>
+                <if var="$fi.PK">
+                    <print var=";primaryKey"/>
+                </if>
+                <if var="$fi.AI">
+                    <print var=";autoIncrement"/>
+                </if>
+                <if var="!$fi.PK">
+                    <if var="$fi.Unique &amp;&amp; $fi.Indexed">
+                        <print var=";unique_index"/>
+                        <else>
+                            <if var="$fi.Unique">
+                                <print var=";unique"/>
+                            </if>
+                            <if var="$fi.Indexed">
+                                <print var=";index"/>
+                            </if>
+                        </else>
+                    </if>
+                    <if var="!$fi.Nullable">
+                        <print var=";not null"/>
+                    </if>
+                </if>
+            </vm-xml>
+        </macro>
+
+    </macros>
+
+</settings>

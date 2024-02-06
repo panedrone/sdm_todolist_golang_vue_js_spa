@@ -1,0 +1,324 @@
+basePath: /api
+consumes:
+- application/json
+definitions:
+  dto.Project:
+    properties:
+      p_id:
+        type: integer
+      p_name:
+        type: string
+    type: object
+  dto.ProjectLi:
+    properties:
+      p_id:
+        type: integer
+      p_name:
+        type: string
+      p_tasks_count:
+        type: integer
+    type: object
+  dto.Task:
+    properties:
+      p_id:
+        type: integer
+      t_comments:
+        type: string
+      t_date:
+        type: string
+      t_id:
+        type: integer
+      t_priority:
+        type: integer
+      t_subject:
+        type: string
+    type: object
+  dto.TaskLi:
+    properties:
+      t_date:
+        type: string
+      t_id:
+        type: integer
+      t_priority:
+        type: integer
+      t_subject:
+        type: string
+    type: object
+  shared.ErrResp:
+    properties:
+      error:
+        type: string
+    type: object
+  shared.NewTask:
+    properties:
+      t_subject:
+        maxLength: 256
+        type: string
+    required:
+    - t_subject
+    type: object
+  shared.ProjectCreateUpdate:
+    properties:
+      p_name:
+        maxLength: 256
+        type: string
+    required:
+    - p_name
+    type: object
+host: 127.0.0.1:8080
+info:
+  contact: {}
+  description: Todolist Service API
+  title: Todolist Service API
+  version: 0.0.1
+paths:
+  /projects:
+    get:
+      operationId: ProjectsReadAll
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: project list
+          schema:
+            items:
+              $ref: '#/definitions/dto.ProjectLi'
+            type: array
+      security:
+      - none: []
+      summary: get project list
+      tags:
+      - Projects
+    post:
+      consumes:
+      - application/json
+      operationId: ProjectCreate
+      parameters:
+      - description: project data
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/shared.ProjectCreateUpdate'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared.ErrResp'
+      security:
+      - none: []
+      summary: create project
+      tags:
+      - Projects
+  /projects/{p_id}:
+    delete:
+      operationId: ProjectDelete
+      parameters:
+      - description: project id
+        in: path
+        name: p_id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared.ErrResp'
+      security:
+      - none: []
+      summary: delete project
+      tags:
+      - Projects
+    get:
+      operationId: ProjectRead
+      parameters:
+      - description: project id
+        in: path
+        name: p_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: project data
+          schema:
+            $ref: '#/definitions/dto.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared.ErrResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/shared.ErrResp'
+      security:
+      - none: []
+      summary: get project
+      tags:
+      - Projects
+    put:
+      consumes:
+      - application/json
+      operationId: ProjectUpdate
+      parameters:
+      - description: project id
+        in: path
+        name: p_id
+        required: true
+        type: integer
+      - description: project data
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/shared.ProjectCreateUpdate'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared.ErrResp'
+      security:
+      - none: []
+      summary: update project
+      tags:
+      - Projects
+  /projects/{p_id}/tasks:
+    get:
+      operationId: TasksReadByProject
+      parameters:
+      - description: project id
+        in: path
+        name: p_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: project tasks
+          schema:
+            items:
+              $ref: '#/definitions/dto.TaskLi'
+            type: array
+      security:
+      - none: []
+      summary: get project tasks
+      tags:
+      - Tasks
+    post:
+      consumes:
+      - application/json
+      operationId: TaskCreate
+      parameters:
+      - description: task data
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/shared.NewTask'
+      - description: project id
+        in: path
+        name: p_id
+        required: true
+        type: integer
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared.ErrResp'
+      security:
+      - none: []
+      summary: create task
+      tags:
+      - Tasks
+  /tasks/{t_id}:
+    delete:
+      operationId: TaskDelete
+      parameters:
+      - description: task id
+        in: path
+        name: t_id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared.ErrResp'
+      security:
+      - none: []
+      summary: delete task
+      tags:
+      - Tasks
+    get:
+      operationId: TaskRead
+      parameters:
+      - description: task id
+        in: path
+        name: t_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: task data
+          schema:
+            $ref: '#/definitions/dto.Task'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared.ErrResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/shared.ErrResp'
+      security:
+      - none: []
+      summary: get task
+      tags:
+      - Tasks
+    put:
+      consumes:
+      - application/json
+      operationId: TaskUpdate
+      parameters:
+      - description: task id
+        in: path
+        name: t_id
+        required: true
+        type: integer
+      - description: task data
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Task'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/shared.ErrResp'
+      security:
+      - none: []
+      summary: update task
+      tags:
+      - Tasks
+produces:
+- application/json
+schemes:
+- http
+swagger: "2.0"
