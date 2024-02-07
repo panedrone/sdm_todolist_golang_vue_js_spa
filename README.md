@@ -1,7 +1,8 @@
 # sdm_todolist_golang_vue_spa
 
 A project demonstrating how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + Golang.
-It consists of 3 parts:
+
+The following cases  are considered:
 
 * [using "github.com/go-gorm/gorm"](./gorm)
 * [using "github.com/jmoiron/sqlx"](./sqlx)
