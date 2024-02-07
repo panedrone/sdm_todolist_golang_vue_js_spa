@@ -37,7 +37,7 @@ func AbortWithErrResp(ctx *gin.Context, httpStatusCode int, message string) {
 	ctx.AbortWithStatusJSON(httpStatusCode, err)
 }
 
-func RespondWithJSON(ctx *gin.Context, httpStatusCode int, jsonObject interface{}) {
+func JSON(ctx *gin.Context, httpStatusCode int, jsonObject interface{}) {
 	ctx.Header("Content-Type", "application/json")
 	ctx.JSON(httpStatusCode, jsonObject)
 }

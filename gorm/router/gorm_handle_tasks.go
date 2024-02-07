@@ -52,7 +52,7 @@ func TaskRead(ctx *gin.Context) {
 		resp.Abort500(ctx, err)
 		return
 	}
-	resp.RespondWithJSON(ctx, http.StatusOK, task)
+	resp.JSON(ctx, http.StatusOK, task)
 }
 
 func TasksReadByProject(ctx *gin.Context) {
@@ -66,7 +66,7 @@ func TasksReadByProject(ctx *gin.Context) {
 		resp.Abort500(ctx, err)
 		return
 	}
-	resp.RespondWithJSON(ctx, http.StatusOK, tasks)
+	resp.JSON(ctx, http.StatusOK, tasks)
 }
 
 func TaskUpdate(ctx *gin.Context) {

@@ -33,7 +33,7 @@ func ProjectsReadAll(ctx *gin.Context) {
 		resp.Abort500(ctx, err)
 		return
 	}
-	resp.RespondWithJSON(ctx, http.StatusOK, all)
+	resp.JSON(ctx, http.StatusOK, all)
 }
 
 func ProjectRead(ctx *gin.Context) {
@@ -50,7 +50,7 @@ func ProjectRead(ctx *gin.Context) {
 		resp.Abort500(ctx, err)
 		return
 	}
-	resp.RespondWithJSON(ctx, http.StatusOK, pr)
+	resp.JSON(ctx, http.StatusOK, pr)
 }
 
 func ProjectUpdate(ctx *gin.Context) {
