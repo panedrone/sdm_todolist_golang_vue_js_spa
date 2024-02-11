@@ -16,21 +16,21 @@ type TasksDao struct {
 // (C)RUD: tasks
 // Generated/AI values are passed to DTO/model.
 
-func (dao *TasksDao) CreateTask(ctx context.Context, item *models.Task) error {
+func (dao *TasksDao) CreateTaskBase(ctx context.Context, item *models.TaskBase) error {
 	return dao.ds.Create(ctx, "tasks", item)
 }
 
 // C(R)UD: tasks
 
-func (dao *TasksDao) ReadTaskList(ctx context.Context) (res []*models.Task, err error) {
+func (dao *TasksDao) ReadTaskBaseList(ctx context.Context) (res []*models.TaskBase, err error) {
 	err = dao.ds.ReadAll(ctx, "tasks", &res)
 	return
 }
 
 // C(R)UD: tasks
 
-func (dao *TasksDao) ReadTask(ctx context.Context, tId int64) (*models.Task, error) {
-	res := &models.Task{}
+func (dao *TasksDao) ReadTaskBase(ctx context.Context, tId int64) (*models.TaskBase, error) {
+	res := &models.TaskBase{}
 	err := dao.ds.Read(ctx, "tasks", res, tId)
 	if err == nil {
 		return res, nil
@@ -40,14 +40,14 @@ func (dao *TasksDao) ReadTask(ctx context.Context, tId int64) (*models.Task, err
 
 // CR(U)D: tasks
 
-func (dao *TasksDao) UpdateTask(ctx context.Context, item *models.Task) (rowsAffected int64, err error) {
+func (dao *TasksDao) UpdateTaskBase(ctx context.Context, item *models.TaskBase) (rowsAffected int64, err error) {
 	rowsAffected, err = dao.ds.Update(ctx, "tasks", item)
 	return
 }
 
 // CRU(D): tasks
 
-func (dao *TasksDao) DeleteTask(ctx context.Context, item *models.Task) (rowsAffected int64, err error) {
+func (dao *TasksDao) DeleteTaskBase(ctx context.Context, item *models.TaskBase) (rowsAffected int64, err error) {
 	rowsAffected, err = dao.ds.Delete(ctx, "tasks", item)
 	return
 }

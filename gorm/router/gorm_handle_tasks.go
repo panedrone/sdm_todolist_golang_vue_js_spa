@@ -31,7 +31,7 @@ func TaskCreate(ctx *gin.Context) {
 	t.TSubject = req.TSubject
 	t.TPriority = 1
 	t.TDate = datetime.NowLocalString()
-	if err := tDao.CreateTask(ctx, &t); err != nil {
+	if err := tDao.CreateTaskBase(ctx, &t.TaskBase); err != nil {
 		resp.Abort500(ctx, err)
 		return
 	}
@@ -43,7 +43,7 @@ func TaskRead(ctx *gin.Context) {
 	if err := request.BindUri(ctx, &uri); err != nil {
 		return
 	}
-	task, err := tDao.ReadTask(ctx, uri.TId)
+	task, err := tDao.ReadTaskBase(ctx, uri.TId)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			resp.Abort404(ctx, err)
@@ -60,8 +60,8 @@ func TasksReadByProject(ctx *gin.Context) {
 	if err := request.BindUri(ctx, &uri); err != nil {
 		return
 	}
-	var tasks []*m.TaskLi
-	tasks, err := tDao.RawProjectTasks(ctx, uri.PId)
+	// tasks, err := tDao.RawProjectTasks(ctx, uri.PId)
+	tasks, err := tDao.ReadProjectTasks(ctx, uri.PId)
 	if err != nil {
 		resp.Abort500(ctx, err)
 		return
@@ -75,7 +75,7 @@ func TaskUpdate(ctx *gin.Context) {
 		return
 	}
 	dao := tDao
-	t, err := dao.ReadTask(ctx, uri.TId)
+	t, err := dao.ReadTaskBase(ctx, uri.TId)
 	if err != nil {
 		resp.Abort400hBadRequest(ctx, err.Error())
 		return
@@ -101,7 +101,7 @@ func TaskUpdate(ctx *gin.Context) {
 	t.TPriority = req.TPriority
 	t.TDate = req.TDate
 	t.TComments = req.TComments
-	if _, err = dao.UpdateTask(ctx, t); err != nil {
+	if _, err = dao.UpdateTaskBase(ctx, t); err != nil {
 		resp.Abort500(ctx, err)
 		return
 	}
@@ -112,7 +112,7 @@ func TaskDelete(ctx *gin.Context) {
 	if err := request.BindUri(ctx, &uri); err != nil {
 		return
 	}
-	if _, err := tDao.DeleteTask(ctx, &m.Task{TId: uri.TId}); err != nil {
+	if _, err := tDao.DeleteTaskBase(ctx, &m.TaskBase{TId: uri.TId}); err != nil {
 		resp.Abort500(ctx, err)
 		return
 	}

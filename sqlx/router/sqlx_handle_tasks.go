@@ -58,7 +58,7 @@ func TaskCreate(ctx *gin.Context) {
 //	@Tags		Tasks
 //	@Id			TasksReadByProject
 //	@Produce	json
-//	@Success	200	{object}	[]dto.TaskLi		"project tasks"
+//	@Success	200	{object}	[]dto.TaskLi	"project tasks"
 //	@Failure	500
 //	@Security	none
 //	@Router		/projects/{p_id}/tasks [get]
