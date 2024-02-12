@@ -62,13 +62,13 @@ func (dao *TasksDao) __ReadProjectTasks(ctx context.Context, pId int64) (res []*
 }
 
 func (dao *TasksDao) _ReadProjectTasks(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
-	var project models.ProjectEx
+	var project models.TaskProject
 	err = dao.ds.Session(ctx).Model(&models.Project{}).
-		Preload(models.TasksFK, func(db *gorm.DB) *gorm.DB {
-			return db.Select("t_id", "t_date", "t_subject", "t_priority").Order("t_date, t_id")
+		Preload(models.RefTasks, func(db *gorm.DB) *gorm.DB {
+			return db.Select("t_id", "t_date", "t_subject", "t_priority"). // Preload defaults is "SELECT * ..."
+											Order("t_date, t_id")
 		}).
 		Where("p_id = ?", pId).Take(&project).Error
-
 	if err != nil {
 		return
 	}
@@ -76,20 +76,13 @@ func (dao *TasksDao) _ReadProjectTasks(ctx context.Context, pId int64) (res []*m
 	return
 }
 
-func (dao *TasksDao) ReadProjectTasks(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
-	var project models.ProjectEx
-	// project.PId = pId
-	err = dao.ds.Session(ctx). // Model(&models.Project{}).
-					InnerJoins(models.TasksFK).
-		//, func(db *gorm.DB) *gorm.DB {
-		//		return db.Select("t_id", "t_date", "t_subject", "t_priority").Order("t_date, t_id")
-		//	}).
-		Where("p_id = ?", pId).Order("t_date, t_id").
-		First(&project).Error
-
-	if err != nil {
-		return
-	}
-	res = project.Tasks
+func (dao *TasksDao) ReadProjectTasks(ctx context.Context, pId int64) (res []*models.ProjectTaskLi, err error) {
+	// SELECT `tasks`.`t_id`,`tasks`.`p_id`,`tasks`.`t_priority`,`tasks`.`t_date`,`tasks`.`t_subject`,`Project`.`p_id` AS `Project__p_id`
+	// FROM `tasks` INNER JOIN `projects` `Project` ON `tasks`.`p_id` = `Project`.`p_id`
+	// WHERE tasks.p_id=2 ORDER BY tasks.t_date, tasks.t_id
+	err = dao.ds.Session(ctx).
+		Joins(models.FkProject). // join avoids "SELECT * ..."
+		Where("tasks.p_id=?", pId).
+		Order("tasks.t_date, tasks.t_id").Find(&res).Error
 	return
 }

@@ -2,25 +2,32 @@ package models
 
 // Hand coded additions
 
-const TasksFK = "Tasks"
+const RefTasks = "Tasks" // this is not FK
 
-type ProjectEx struct {
-	// Project
-	PId int64 `json:"p_id" gorm:"column:p_id;primaryKey;autoIncrement"`
-	// to test Preload:
-	Tasks []*TaskLi `gorm:"foreignKey:PId;references:PId"`
-}
+const FkProject = "Project"
 
-func (t *ProjectEx) TableName() string {
-	return "projects"
-}
-
+// Task to test AutoMigrate
 type Task struct {
 	TaskBase
-	// to test AutoMigrate:
 	Project Project `gorm:"foreignKey:PId;references:PId"`
 }
 
-func (t *TaskLi) TableName() string {
+// TaskProject to test Joins and Preload
+type TaskProject struct {
+	PId   int64     `gorm:"column:p_id;primaryKey"`
+	Tasks []*TaskLi `gorm:"foreignKey:PId;references:PId"`
+}
+
+func (t *TaskProject) TableName() string {
+	return "projects"
+}
+
+// ProjectTaskLi to test Joins
+type ProjectTaskLi struct {
+	TaskLi
+	Project TaskProject `gorm:"foreignKey:PId;references:PId"`
+}
+
+func (t *ProjectTaskLi) TableName() string {
 	return "tasks"
 }
