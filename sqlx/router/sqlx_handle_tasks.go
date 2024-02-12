@@ -20,7 +20,7 @@ var (
 // TaskCreate
 //
 //	@Summary	create task
-//	@Tags		Tasks
+//	@Tags		RefTasks
 //	@Id			TaskCreate
 //	@Accept		json
 //	@Param		json	body	request.NewTask	true	"task data"
@@ -55,7 +55,7 @@ func TaskCreate(ctx *gin.Context) {
 // TasksReadByProject
 //
 //	@Summary	get project tasks
-//	@Tags		Tasks
+//	@Tags		RefTasks
 //	@Id			TasksReadByProject
 //	@Produce	json
 //	@Success	200	{object}	[]dto.TaskLi	"project tasks"
@@ -79,7 +79,7 @@ func TasksReadByProject(ctx *gin.Context) {
 // TaskRead
 //
 //	@Summary	get task
-//	@Tags		Tasks
+//	@Tags		RefTasks
 //	@Id			TaskRead
 //	@Produce	json
 //	@Success	200	{object}	dto.Task	"task data"
@@ -109,7 +109,7 @@ func TaskRead(ctx *gin.Context) {
 // TaskUpdate
 //
 //	@Summary	update task
-//	@Tags		Tasks
+//	@Tags		RefTasks
 //	@Id			TaskUpdate
 //	@Accept		json
 //	@Success	200
@@ -158,7 +158,7 @@ func TaskUpdate(ctx *gin.Context) {
 // TaskDelete
 //
 //	@Summary	delete task
-//	@Tags		Tasks
+//	@Tags		RefTasks
 //	@Id			TaskDelete
 //	@Success	204
 //	@Failure	400

@@ -219,7 +219,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Tasks"
+                    "RefTasks"
                 ],
                 "summary": "get project tasks",
                 "operationId": "TasksReadByProject",
@@ -257,7 +257,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Tasks"
+                    "RefTasks"
                 ],
                 "summary": "create task",
                 "operationId": "TaskCreate",
@@ -303,7 +303,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Tasks"
+                    "RefTasks"
                 ],
                 "summary": "get task",
                 "operationId": "TaskRead",
@@ -344,7 +344,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Tasks"
+                    "RefTasks"
                 ],
                 "summary": "update task",
                 "operationId": "TaskUpdate",
@@ -385,7 +385,7 @@ const docTemplate = `{
                     }
                 ],
                 "tags": [
-                    "Tasks"
+                    "RefTasks"
                 ],
                 "summary": "delete task",
                 "operationId": "TaskDelete",
