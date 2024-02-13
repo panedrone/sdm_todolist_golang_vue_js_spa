@@ -1,5 +1,3 @@
-# sdm_todolist_golang_vue_spa
-
 A project demonstrating how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + Golang.
 
 The following cases  are considered:

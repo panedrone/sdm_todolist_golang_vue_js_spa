@@ -3,7 +3,7 @@ package dbal
 import (
 	"context"
 	"gorm.io/gorm"
-	models2 "sdm_demo_todolist/gorm/dbal/models"
+	"sdm_demo_todolist/gorm/dbal/models"
 )
 
 // Hand coded additions
@@ -12,9 +12,9 @@ import (
 
 //      ----- this is the best one so far -----
 
-func (dao *TasksDao) ReadProjectTasks(ctx context.Context, pId int64) (res []*models2.TaskLi, err error) {
-	queryModel := &models2.Task{
-		TaskBase: models2.TaskBase{PId: pId},
+func (dao *TasksDao) ReadProjectTasks(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
+	queryModel := &models.Task{
+		TaskBase: models.TaskBase{PId: pId},
 	}
 	err = dao.ds.Session(ctx).Model(queryModel).
 		// Select("t_id", "t_date", "t_subject", "t_priority").
@@ -26,8 +26,8 @@ func (dao *TasksDao) ReadProjectTasks(ctx context.Context, pId int64) (res []*mo
 
 // 2. "TaskLi" for both "Model" and Result, requires "Select" --> SELECT * FROM `tasks` WHERE p_id = 2 ORDER BY t_date, t_id
 
-func (dao *TasksDao) _ReadProjectTasks2(ctx context.Context, pId int64) (res []*models2.TaskLi, err error) {
-	queryModel := &models2.TaskLi{PId: pId}
+func (dao *TasksDao) _ReadProjectTasks2(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
+	queryModel := &models.TaskLi{PId: pId}
 	err = dao.ds.Session(ctx).Model(queryModel).
 		// Select("t_id", "t_date", "t_subject", "t_priority").
 		Where(queryModel).
@@ -38,10 +38,10 @@ func (dao *TasksDao) _ReadProjectTasks2(ctx context.Context, pId int64) (res []*
 
 // 3. Using "Table", requires "Select" --> SELECT * FROM `tasks` WHERE p_id = 2 ORDER BY t_date, t_id
 
-func (dao *TasksDao) _ReadProjectTasks3(ctx context.Context, pId int64) (res []*models2.TaskLi, err error) {
+func (dao *TasksDao) _ReadProjectTasks3(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
 	err = dao.ds.Session(ctx).Table("tasks").
 		// Select("t_id", "t_date", "t_subject", "t_priority").
-		Where(&models2.TaskLi{PId: pId}).
+		Where(&models.TaskLi{PId: pId}).
 		Order("t_date, t_id").Find(&res).Error
 
 	return
@@ -49,10 +49,10 @@ func (dao *TasksDao) _ReadProjectTasks3(ctx context.Context, pId int64) (res []*
 
 // 4. The case "direct TaskLi": no "Table", no "Model". Requires "Select" --> SELECT * FROM `tasks` WHERE p_id = 2 ORDER BY t_date, t_id
 
-func (dao *TasksDao) _ReadProjectTasks4(ctx context.Context, pId int64) (res []*models2.TaskLi, err error) {
+func (dao *TasksDao) _ReadProjectTasks4(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
 	err = dao.ds.Session(ctx).
 		// Select("t_id", "t_date", "t_subject", "t_priority").
-		Where(&models2.TaskLi{PId: pId}).
+		Where(&models.TaskLi{PId: pId}).
 		Order("t_date, t_id").Find(&res).Error
 
 	return
@@ -60,11 +60,11 @@ func (dao *TasksDao) _ReadProjectTasks4(ctx context.Context, pId int64) (res []*
 
 // 5. Using "Preload" for "educational purposes", requires "Select".
 
-func (dao *TasksDao) _ReadProjectTasks5(ctx context.Context, pId int64) (res []*models2.TaskLi, err error) {
-	var queryModel = &models2.ProjectWithTasks{
-		Project: models2.Project{PId: pId},
+func (dao *TasksDao) _ReadProjectTasks5(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
+	var queryModel = &models.ProjectWithTasks{
+		Project: models.Project{PId: pId},
 	}
-	err = dao.ds.Session(ctx).Model(queryModel).Preload(models2.RefProjectTasks,
+	err = dao.ds.Session(ctx).Model(queryModel).Preload(models.RefProjectTasks,
 		func(db *gorm.DB) *gorm.DB {
 			// Use "Select" because "Preload" default issues "SELECT * FROM ..."
 			return db.Select("t_id", "p_id", "t_date", "t_subject", "t_priority").
