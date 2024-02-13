@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 	"net/http"
 	"sdm_demo_todolist/gorm/dbal"
-	m "sdm_demo_todolist/gorm/models"
+	m "sdm_demo_todolist/gorm/dbal/models"
 	"sdm_demo_todolist/shared/request"
 	"sdm_demo_todolist/shared/resp"
 )

@@ -4,7 +4,7 @@
 
     <folders target="sdm_demo_todolist" sql="gorm/sdm/sql"/>
 
-    <dto scope="gorm/models" inheritance="" field-names-mode="0" macro=""/>
+    <dto scope="gorm/dbal/models" inheritance="" field-names-mode="0" macro=""/>
 
     <dao scope="gorm/dbal" field-assign-mode="3" macro=""/>
 

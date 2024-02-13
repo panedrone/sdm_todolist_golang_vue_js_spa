@@ -2,7 +2,7 @@ package dbal
 
 import (
 	"context"
-	"sdm_demo_todolist/gorm/models"
+	"sdm_demo_todolist/gorm/dbal/models"
 )
 
 func (dao *ProjectsDao) ReadAll(ctx context.Context) (res []*models.ProjectLi, err error) {

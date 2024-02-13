@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 	"net/http"
 	"sdm_demo_todolist/gorm/dbal"
-	m "sdm_demo_todolist/gorm/models"
+	"sdm_demo_todolist/gorm/dbal/models"
 	"sdm_demo_todolist/shared/datetime"
 	"sdm_demo_todolist/shared/request"
 	"sdm_demo_todolist/shared/resp"
@@ -26,7 +26,7 @@ func TaskCreate(ctx *gin.Context) {
 	if err := request.BindJSON(ctx, &req); err != nil {
 		return
 	}
-	t := m.Task{}
+	t := models.Task{}
 	t.PId = uri.PId
 	t.TSubject = req.TSubject
 	t.TPriority = 1
@@ -80,7 +80,7 @@ func TaskUpdate(ctx *gin.Context) {
 		resp.Abort400hBadRequest(ctx, err.Error())
 		return
 	}
-	var req m.Task
+	var req models.Task
 	if err := request.BindJSON(ctx, &req); err != nil {
 		return
 	}
@@ -112,7 +112,7 @@ func TaskDelete(ctx *gin.Context) {
 	if err := request.BindUri(ctx, &uri); err != nil {
 		return
 	}
-	if _, err := tDao.DeleteTaskBase(ctx, &m.TaskBase{TId: uri.TId}); err != nil {
+	if _, err := tDao.DeleteTaskBase(ctx, &models.TaskBase{TId: uri.TId}); err != nil {
 		resp.Abort500(ctx, err)
 		return
 	}

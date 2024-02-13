@@ -6,7 +6,7 @@ package dbal
 
 import (
 	"context"
-	"sdm_demo_todolist/gorm/models"
+	"sdm_demo_todolist/gorm/dbal/models"
 )
 
 type TasksDao struct {
