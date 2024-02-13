@@ -16,9 +16,9 @@
 
     <dto-class name="gorm-TaskLi" ref="tasks">
 
-        <header>// TaskLi: a `task` list item having no "t_comments"</header>
+        <header>// TaskLi: a `target` list item having no "t_comments"</header>
 
-        <field column="p_id" type="-"/>
+<!--        <field column="p_id" type="-"/>-->
         <field column="t_comments" type="-"/>
 
     </dto-class>

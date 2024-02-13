@@ -16,7 +16,7 @@
 
     <dto-class name="sqlx-TaskLi" ref="tasks">
 
-        <header>// `task` list item: [-] p_id, [-] t_comments</header>
+        <header>// `target` list item: [-] p_id, [-] t_comments</header>
 
         <field type="-" column="p_id"/>
         <field type="-" column="t_comments"/>
