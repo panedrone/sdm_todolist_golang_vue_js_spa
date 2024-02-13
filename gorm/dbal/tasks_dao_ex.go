@@ -8,7 +8,7 @@ import (
 
 // Hand coded additions
 
-func (dao *TasksDao) _ReadProjectTasks(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
+func (dao *TasksDao) _ReadProjectTasks1(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
 	// "Table" and "direct TaskLi" require "Select":
 	//		err = dao.ds.Session(ctx).Table("tasks"). // --> "SELECT * FROM ..."
 	//		err = dao.ds.Session(ctx). // --> "SELECT * FROM ..."
@@ -23,7 +23,7 @@ func (dao *TasksDao) _ReadProjectTasks(ctx context.Context, pId int64) (res []*m
 	return
 }
 
-func (dao *TasksDao) ReadProjectTasks(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
+func (dao *TasksDao) _ReadProjectTasks2(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
 	// SELECT * FROM `tasks` WHERE p_id = 2 ORDER BY t_date, t_id
 	model := &models.TaskLi{PId: pId}
 	err = dao.ds.Session(ctx).Model(model).
@@ -40,18 +40,19 @@ func (dao *TasksDao) _ReadProjectTasks3(ctx context.Context, pId int64) (res []*
 	return
 }
 
-func (dao *TasksDao) _ReadProjectTasks4(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
+func (dao *TasksDao) ReadProjectTasks(ctx context.Context, pId int64) (res []*models.TaskLi, err error) {
+	// Implemented with "Preload" for educational purposes. The best one is "_ReadProjectTasks1".
 	// SELECT `t_id`,`p_id`,`t_date`,`t_subject`,`t_priority` FROM `tasks` WHERE `tasks`.`p_id` = 5 ORDER BY t_date, t_id
 	var model = &models.ProjectWithTasks{
 		Project: models.Project{PId: pId},
 	}
-	err = dao.ds.Session(ctx).Model(model).Preload(models.RefProjectTasks,
+	err = dao.ds.Session(ctx).Model(model.Project).Preload(models.RefProjectTasks,
 		func(db *gorm.DB) *gorm.DB {
 			// Use "Select" because "Preload" default issues "SELECT * FROM ..."
 			return db.Select("t_id", "p_id", "t_date", "t_subject", "t_priority").
 				Order("t_date, t_id")
 		}).
-		Where(model).Take(&model).Error
+		Where(model).Take(model).Error
 	if err == nil {
 		res = model.RefTasks
 	}

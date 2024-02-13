@@ -20,7 +20,3 @@ type ProjectWithTasks struct {
 	Project
 	RefTasks []*TaskLi `gorm:"ForeignKey:PId;references:PId"`
 }
-
-func (t *ProjectWithTasks) TableName() string {
-	return "projects"
-}
