@@ -6,7 +6,7 @@
 
     <dto-class name="sqlx-ProjectLi" ref="projects">
 
-        <header>// `project` list item: [+] p_tasks_count</header>
+        <header>// ProjectLi `project` list item: [+] p_tasks_count</header>
 
         <field type="int64${json-sqlx}" column="p_tasks_count"/>
 
@@ -16,33 +16,14 @@
 
     <dto-class name="sqlx-TaskLi" ref="tasks">
 
-        <header>// `target` list item: [-] p_id, [-] t_comments</header>
+        <header>// TaskLi `task` list item: [-] p_id, [-] t_comments</header>
 
         <field type="-" column="p_id"/>
         <field type="-" column="t_comments"/>
 
     </dto-class>
 
-    <dao-class name="ProjectsDao">
-
-        <crud dto="sqlx-Project">
-            <create/>
-            <read/>
-            <update/>
-            <delete/>
-        </crud>
-
-        <query-dto-list method="GetProjects" dto="sqlx-ProjectLi" ref="get_projects.sql"/>
-
-        <!-- testing -->
-
-        <query-list method="GetProjectIds" return-type="int64" ref="get_projects.sql"/>
-
-        <!-- testing -->
-
-        <!--    <queryContext method="GetProjectId" return-type="int64" ref="get_projects.sql"/>-->
-
-    </dao-class>
+    <dao-class name="ProjectsDao" ref="ProjectsDao.xml"/>
 
     <dao-class name="TasksDao">
 

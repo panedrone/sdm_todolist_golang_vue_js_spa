@@ -4,6 +4,7 @@ package dto
 // Additional custom methods can be implemented in a separate file like <this_file>_ex.go.
 // https://sqldalmaker.sourceforge.net/
 
+// ProjectLi list item: [+] p_tasks_count
 type ProjectLi struct {
 	PId         int64  `json:"p_id"`
 	PName       string `json:"p_name"`
