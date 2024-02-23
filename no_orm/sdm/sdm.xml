@@ -20,8 +20,8 @@
 
     </dto-class>
 
-    <dao-class name="ProjectsDao" ref="ProjectsDao.xml"/>
+    <dao-class name="ProjectsDao" ref="dao_projects.xml"/>
 
-    <dao-class name="TasksDao" ref="TasksDao.xml"/>
+    <dao-class name="TasksDao" ref="dao_tasks.xml"/>
 
 </sdm>
